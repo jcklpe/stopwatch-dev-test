@@ -7,39 +7,25 @@ let timerDisplay = document.querySelector(`.time-display`);
 let toggleButton = document.querySelector(`.toggle-timer`);
 let resetButton = document.querySelector(`.reset-timer`);
 
-// define starting time variables
-let startTime = 0;
-let latestTime = 0;
-let savedTime = 0;
-let incrementedTime = 0;
+// declare initial time variables
+let time = 0;
 let seconds = 0;
+let minutes = 0;
 
+// declare initial isState states
 let isInitialState = toggleButton.classList.contains(`initial-state`);
 let isRunning = toggleButton.classList.contains(`running`);
 let isPaused = toggleButton.classList.contains(`paused`);
 
-function testFunction() {
-  // console.log(`
-  //     startTime:             ${startTime}
-  //     savedTime:             ${savedTime}
-  //     total elapsed time:    ${latestTime - startTime}
-  //     latestTime:            ${latestTime}
-  //     Date.getTime:          ${new Date().getTime()}`);
-}
-
 //- button functions
 // toggle time between 3 states of initial, running, and paused
 function toggleTimer() {
-  //latestTime = new Date().getTime();
   switch (true) {
-    // if in intial state, run timer, remove initial state, and log start time
+    // if in intial state, start timer to run state, remove initial state, and log start time
     case isInitialState:
       toggleButton.classList.add(`running`);
       toggleButton.classList.remove(`initial-state`);
       toggleButton.textContent = `Pause`;
-      startTime = new Date().getTime();
-      console.log(`was initial now running`);
-      testFunction();
 
       break;
 
@@ -49,19 +35,14 @@ function toggleTimer() {
       toggleButton.classList.remove(`running`);
       toggleButton.textContent = `Start`;
 
-      console.log(`was running now paused`);
-      testFunction();
-
       break;
 
-    // if timer is currently paused then run, remove paused
+    // if timer is currently paused then run, remove paused and start timer
     case isPaused:
       toggleButton.classList.add(`running`);
       toggleButton.classList.remove(`paused`);
       toggleButton.textContent = `Pause`;
-      incrementedTime = latestTime - startTime;
-      console.log(`was paused now running`);
-      testFunction();
+
       break;
 
     default:
@@ -73,59 +54,35 @@ function resetTimer() {
   toggleButton.classList.remove(`running`);
   toggleButton.classList.remove(`paused`);
   toggleButton.classList.add(`initial-state`);
-  startTime = 0;
-  savedTime = 0;
+  time = 0;
   toggleButton.textContent = `Start`;
-  console.log(`was x now reset to initial`);
-  testFunction();
 }
 
 //- button event listeners
 toggleButton.addEventListener(`click`, toggleTimer);
 resetButton.addEventListener(`click`, resetTimer);
 
-//- State functions
-
+//- update time
 function runningTimer() {
   // update state values
   isInitialState = toggleButton.classList.contains(`initial-state`);
   isRunning = toggleButton.classList.contains(`running`);
   isPaused = toggleButton.classList.contains(`paused`);
-  // update time value
-  latestTime = new Date().getTime();
 
+  //increment time if running
   if (isRunning) {
-    // increment savedTime
-    if (savedTime === 0) {
-      savedTime = latestTime - startTime;
-    } else {
-      savedTime += incrementedTime;
-    }
-    console.log(`is running`);
+    ++time;
   }
-  // if timer has run but isn't currently running then it's paused
-  else if (isPaused) {
-    console.log(`is paused`);
-  } else {
-    // nothing here
-  }
+  seconds = Math.floor(time % 60);
+  minutes = Math.floor(time / 60);
 
-  seconds = Math.floor(savedTime / 1000000);
-
-  let content = `
-  <p>startTime:             ${startTime}</p>
-  <p>savedTime:             ${savedTime}</p>
-  <p>savedTime/1000000:       ${seconds}</p>
-  <p>total elapsed time:    ${latestTime - startTime}</p>
-  <p>latestTime:            ${latestTime}</p>
-  <p>Date.getTime:          ${new Date().getTime()}</p>
-  `;
+  let content = `${minutes}:${seconds}`;
 
   timerDisplay.innerHTML = content;
 }
 
 function updateTimeDisplay() {
-  setInterval(runningTimer, 1);
+  setInterval(runningTimer, 1000);
 }
 
 updateTimeDisplay();
