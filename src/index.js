@@ -110,15 +110,20 @@ function runningTimer() {
     // nothing here
   }
 
-  seconds = Math.floor(savedTime / 1000);
-  timerDisplay.textContent = `
-  startTime:             ${startTime}
-  savedTime:             ${savedTime}
-  total elapsed time:    ${latestTime - startTime}
-  latestTime:            ${latestTime}
-  Date.getTime:          ${new Date().getTime()}
-  savedTime/1000:               ${seconds}`;
+  seconds = Math.floor(savedTime / 1000000);
+
+  let content = `
+  <p>startTime:             ${startTime}</p>
+  <p>savedTime:             ${savedTime}</p>
+  <p>savedTime/1000000:       ${seconds}</p>
+  <p>total elapsed time:    ${latestTime - startTime}</p>
+  <p>latestTime:            ${latestTime}</p>
+  <p>Date.getTime:          ${new Date().getTime()}</p>
+  `;
+
+  timerDisplay.innerHTML = content;
 }
+
 function updateTimeDisplay() {
   setInterval(runningTimer, 1);
 }
