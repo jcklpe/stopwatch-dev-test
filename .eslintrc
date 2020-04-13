@@ -1,0 +1,27 @@
+{
+  "extends": ["wesbos"],
+  "rules": {
+    "no-use-before-define":0,
+    "no-plusplus": 0,
+    "spaced-comment": 0,
+    // the below conflicts with prettier and idk how to override prettier
+    // "space-before-blocks": [2, "never"],
+    "no-console": 0,
+    "quotes": ["error", "backtick"],
+    // turn this on error for production
+    "no-unused-vars": "off",
+
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "es5"
+      }
+    ],
+    "parserOptions": {
+      "sourceType": "module"
+    },
+    "ecmaFeatures": {
+      "modules": true
+  }
+  }
+}

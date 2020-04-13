@@ -1,3 +1,55 @@
+//- Color Variables
+$start: #9be872;
+$reset:  #FF5733;
+$restart: #ccf443;
+$pause: #ffdc2d;
+
+//- Styles
 body {
   font-family: sans-serif;
+  input:focus{
+    outline: none;
+  }
+
+
+}
+
+.stopwatch-component {
+  border: black solid 1px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+
+  .button-group {
+    button {
+      padding: 25px;
+      margin: 25px;
+      min-width: 100px;
+      outline: 0;
+      &::-moz-focus-inner {
+        border: 0;
+      }
+    }
+
+    .running {
+      background: $pause;
+    }
+
+    .paused {
+      background: $restart;
+    }
+    .reset-timer {
+      background: $reset;
+    }
+
+    .initial-state {
+      background: $start;
+    }
+  }
+}
+
+#app {
+  margin: 0;
+  padding: 0;
 }
