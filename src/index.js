@@ -1,28 +1,18 @@
-/* eslint-disable no-var */
-/* eslint-disable operator-assignment */
 /* eslint-disable prefer-const */
 //- scss injection
-//import "./styles.scss";
+import "./styles.scss";
 
-//ui variables
+//ui selector variables
 let timerDisplay = document.querySelector(`.time-display`);
 let toggleButton = document.querySelector(`.toggle-timer`);
 let resetButton = document.querySelector(`.reset-timer`);
 
-let time = 0;
+// define starting time variables
 let startTime = 0;
 let latestTime = 0;
 let savedTime = 0;
 let incrementedTime = 0;
-var seconds = 0;
-let timerDisplaySeconds = `00`;
-let timerDisplayMinutes = `0`;
-let timerDisplayNumber = `0:00`;
-let timerRunning = false;
-
-//button event listeners
-toggleButton.addEventListener(`click`, toggleTimer);
-resetButton.addEventListener(`click`, resetTimer);
+let seconds = 0;
 
 let isInitialState = toggleButton.classList.contains(`initial-state`);
 let isRunning = toggleButton.classList.contains(`running`);
@@ -58,11 +48,6 @@ function toggleTimer() {
       toggleButton.classList.add(`paused`);
       toggleButton.classList.remove(`running`);
       toggleButton.textContent = `Start`;
-      // if (savedTime === 0) {
-      //   savedTime = latestTime - startTime;
-      // } else {
-      //   savedTime = savedTime + incrementedTime;
-      // }
 
       console.log(`was running now paused`);
       testFunction();
@@ -95,43 +80,47 @@ function resetTimer() {
   testFunction();
 }
 
+//- button event listeners
+toggleButton.addEventListener(`click`, toggleTimer);
+resetButton.addEventListener(`click`, resetTimer);
+
 //- State functions
 
 function runningTimer() {
+  // update state values
   isInitialState = toggleButton.classList.contains(`initial-state`);
   isRunning = toggleButton.classList.contains(`running`);
   isPaused = toggleButton.classList.contains(`paused`);
-
+  // update time value
   latestTime = new Date().getTime();
+
   if (isRunning) {
+    // increment savedTime
     if (savedTime === 0) {
       savedTime = latestTime - startTime;
     } else {
-      savedTime = savedTime + incrementedTime;
+      savedTime += incrementedTime;
     }
     console.log(`is running`);
   }
   // if timer has run but isn't currently running then it's paused
   else if (isPaused) {
     console.log(`is paused`);
+  } else {
+    // nothing here
   }
 
   seconds = Math.floor(savedTime / 1000);
   timerDisplay.textContent = `
   startTime:             ${startTime}
-  savedTime:             ${savedTime} \
-
-  total elapsed time:    ${latestTime - startTime} \
-
-  latestTime:            ${latestTime} \
-
-  Date.getTime:          ${new Date().getTime()} \
-
-
-  seconds:               ${seconds}`;
+  savedTime:             ${savedTime}
+  total elapsed time:    ${latestTime - startTime}
+  latestTime:            ${latestTime}
+  Date.getTime:          ${new Date().getTime()}
+  savedTime/1000:               ${seconds}`;
 }
 function updateTimeDisplay() {
-  setInterval(runningTimer, 10);
+  setInterval(runningTimer, 1);
 }
 
 updateTimeDisplay();

@@ -1,9 +1,11 @@
 {
   "extends": ["wesbos"],
   "rules": {
-    "no-use-before-define":0,
     "no-plusplus": 0,
     "spaced-comment": 0,
+    "operator-assignment": 0,
+    "no-var": 0,
+    "prefer-const ": "off",
     // the below conflicts with prettier and idk how to override prettier
     // "space-before-blocks": [2, "never"],
     "no-console": 0,
