@@ -86,7 +86,7 @@ function toggleTimer() {
     case isRunning:
       toggleButton.classList.add(`paused`);
       toggleButton.classList.remove(`running`);
-      toggleButton.textContent = `Start`;
+      toggleButton.textContent = `Resume`;
       pausedTime = Date.now();
 
       break;
