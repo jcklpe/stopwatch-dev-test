@@ -51,7 +51,7 @@ function loop() {
   }
 
   // render display content
-  if (seconds < 9.99) {
+  if (seconds < 9.99999) {
     content = `${minutes}:0${seconds}`;
   } else {
     content = `${minutes}:${seconds}`;
