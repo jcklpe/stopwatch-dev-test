@@ -1,7 +1,7 @@
 //- scss injection
 import "./styles.scss";
 
-// utility functions
+//- utility functions
 const sumArray = function(array) {
   return array.reduce(function(a, b) {
     return a + b;
@@ -38,9 +38,13 @@ class Stopwatch {
     // button event listeners
     this.toggleButton.addEventListener(`click`, this.toggleTimer);
     this.resetButton.addEventListener(`click`, this.resetTimer);
-  } // end of constructor
 
-  // loop method
+    // kickoff loop
+    // requestAnimationFrame(this.loop);
+  } //end of constructor
+
+  //- Methods
+  // stopwatch loop process
   loop() {
     // update ui state
     this.isInitialState = this.toggleButton.classList.contains(`initial-state`);
@@ -69,14 +73,51 @@ class Stopwatch {
       this.timerDisplay.innerHTML = this.content;
     } else {
       this.content = `0:00.00`;
-      this.document.title = `Stopwatch`;
+      document.title = `Stopwatch`;
       this.timerDisplay.innerHTML = this.content;
     }
 
     requestAnimationFrame(this.loop);
   } // end of loop method
 
-  // reset method
+  // toggle time between 3 states of initial, running, and paused
+  toggleTimer() {
+    switch (true) {
+      // if in intial state, start timer to run state, remove initial state, and log start time
+      case this.isInitialState:
+        this.startTime = Date.now();
+        this.toggleButton.classList.add(`running`);
+        this.toggleButton.classList.remove(`initial-state`);
+        this.toggleButton.textContent = `Pause`;
+
+        break;
+
+      // if timer is currently running, pause timer, remove running, and save time to variable
+      case this.isRunning:
+        this.toggleButton.classList.add(`paused`);
+        this.toggleButton.classList.remove(`running`);
+        this.toggleButton.textContent = `Resume`;
+        this.pausedTime = Date.now();
+
+        break;
+
+      // if timer is currently paused then start running state, remove paused, and update time variables
+      case this.isPaused:
+        this.toggleButton.classList.add(`running`);
+        this.toggleButton.classList.remove(`paused`);
+        this.toggleButton.textContent = `Pause`;
+        this.unpausedTime = Date.now();
+        this.pauseIncrement = this.unpausedTime - this.pausedTime;
+        this.totalPausedTimeArray.push(this.pauseIncrement);
+        this.totalPausedTime = sumArray(this.totalPausedTimeArray);
+
+        break;
+
+      default:
+    }
+  }
+
+  // revert to intitial state, and reset time variables
   resetTimer() {
     // reset to initial state
     this.toggleButton.classList.remove(`running`);
@@ -97,7 +138,10 @@ class Stopwatch {
     // reset ui content
     this.toggleButton.textContent = `Start`;
     this.content = `0:00.00`;
-  } // end of reset method
-} // end of Stopwatch class
+  } //end of resetTimer method
+} //end of Stopwatch class
 
-const go = new Stopwatch();
+//- Run
+
+const instance = new Stopwatch();
+instance.loop();
