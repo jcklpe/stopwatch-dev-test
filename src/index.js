@@ -59,14 +59,14 @@ class Stopwatch {
 
     // render display content
     if (this.seconds < 9.99999) {
-      this.content = `${minutes}:0${seconds}`;
+      this.content = `${this.minutes}:0${this.seconds}`;
     } else {
-      this.content = `${minutes}:${seconds}`;
+      this.content = `${this.minutes}:${this.seconds}`;
     }
 
     if (!this.isInitialState) {
       document.title = this.content;
-      this.timerDisplay.innerHTML = content;
+      this.timerDisplay.innerHTML = this.content;
     } else {
       this.content = `0:00.00`;
       this.document.title = `Stopwatch`;
