@@ -8,7 +8,9 @@
     "alt": "parcel alt-index.html --open",
     "build": "parcel build index.html"
   },
-  "dependencies": {},
+  "dependencies": {
+    "auto-bind": "^4.0.0"
+  },
   "devDependencies": {
     "@babel/core": "7.2.0",
     "babel-eslint": "^9.0.0",
