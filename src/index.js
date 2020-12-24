@@ -3,6 +3,20 @@ import "./styles.scss";
 
 const autoBind = require(`auto-bind`);
 
+//- Global Variables
+
+let stopwatchIter = 0;
+const appDiv = document.getElementById(`app`);
+// define component markup
+const stopwatchMarkup = `<div class="timer-group">
+       <p class="time-display">0:00.00</p>
+     </div>
+
+     <div class="button-group">
+       <button class="toggle-timer initial-state">Start</button>
+       <button class="reset-timer">Reset</button>
+     </div>`;
+
 //- utility functions
 const sumArray = function(array) {
   return array.reduce(function(a, b) {
@@ -10,14 +24,36 @@ const sumArray = function(array) {
   }, 0);
 };
 
+//- Class Object definitions
 class Stopwatch {
   constructor() {
+    // automatically binds all methods' use of this
     autoBind(this);
+    this.createTimer();
+  } //end of constructor
 
-    //ui selector variables
-    this.timerDisplay = document.querySelector(`.time-display`);
+  // Methods
+  createTimer() {
+    this.stopwatchComponent = document.createElement(`div`);
+    this.stopwatchComponent.classList.add(
+      `stopwatch-component`,
+      `stopwatch-component-${stopwatchIter}`
+    );
+    appDiv.appendChild(this.stopwatchComponent);
+    this.stopwatchComponent.innerHTML = stopwatchMarkup;
+
+    //button selectors
     this.toggleButton = document.querySelector(`.toggle-timer`);
     this.resetButton = document.querySelector(`.reset-timer`);
+
+    // button event listeners
+    this.toggleButton.addEventListener(`click`, this.toggleTimer);
+    this.resetButton.addEventListener(`click`, this.resetTimer);
+
+    // declare initial isState
+    this.isInitialState = this.toggleButton.classList.contains(`initial-state`);
+    this.isRunning = this.toggleButton.classList.contains(`running`);
+    this.isPaused = this.toggleButton.classList.contains(`paused`);
 
     // declare initial time variables
     this.now = 0;
@@ -34,19 +70,11 @@ class Stopwatch {
     // declare initial display content
     this.content = `0:00.00`;
 
-    // declare initial isState
-    this.isInitialState = this.toggleButton.classList.contains(`initial-state`);
-    this.isRunning = this.toggleButton.classList.contains(`running`);
-    this.isPaused = this.toggleButton.classList.contains(`paused`);
-
-    // button event listeners
-    this.toggleButton.addEventListener(`click`, this.toggleTimer);
-    this.resetButton.addEventListener(`click`, this.resetTimer);
+    this.timerDisplay = document.querySelector(`.time-display`);
 
     this.loop();
-  } //end of constructor
+  }
 
-  //- Methods
   loop() {
     // update ui state
     this.isInitialState = this.toggleButton.classList.contains(`initial-state`);
@@ -79,7 +107,7 @@ class Stopwatch {
     }
 
     requestAnimationFrame(this.loop);
-  }
+  } // end of loop method
 
   toggleTimer() {
     switch (true) {
@@ -141,5 +169,14 @@ class Stopwatch {
   }
 } //end of Stopwatch class
 
-//- Run
-const instance = new Stopwatch();
+//- Global UI functions
+const spawnTimer = function() {
+  stopwatchIter++;
+  console.log(`spawning a new timer`);
+  const instance = new Stopwatch();
+};
+
+//- Global UI
+
+const spawnButton = document.querySelector(`.spawn-button`);
+spawnButton.addEventListener(`click`, spawnTimer);
