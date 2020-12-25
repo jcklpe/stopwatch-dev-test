@@ -32,6 +32,7 @@ class Stopwatch {
     // automatically binds all methods' use of this
     autoBind(this);
 
+    // create stopwatch component div and add it to the page with markup
     this.stopwatchComponent = document.createElement(`div`);
     this.stopwatchComponent.classList.add(
       `stopwatch-component`,
@@ -49,9 +50,7 @@ class Stopwatch {
     this.resetButton.addEventListener(`click`, this.resetTimer);
 
     // declare initial isState
-    this.isInitialState = this.toggleButton.classList.contains(`initial-state`);
-    this.isRunning = this.toggleButton.classList.contains(`running`);
-    this.isPaused = this.toggleButton.classList.contains(`paused`);
+    this.updateState();
 
     // declare initial time variables
     this.now = 0;
@@ -72,11 +71,15 @@ class Stopwatch {
     this.loop();
   } //end of constructor
 
-  loop() {
-    // update ui state
+  updateState() {
     this.isInitialState = this.toggleButton.classList.contains(`initial-state`);
     this.isRunning = this.toggleButton.classList.contains(`running`);
     this.isPaused = this.toggleButton.classList.contains(`paused`);
+  }
+
+  loop() {
+    // update ui state
+    this.updateState();
 
     //update time variables
     this.now = Date.now();
