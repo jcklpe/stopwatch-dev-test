@@ -6,6 +6,8 @@ const autoBind = require(`auto-bind`);
 //- Global Variables
 
 let stopwatchIter = 0;
+const stopwatchGroup = [];
+
 const appDiv = document.getElementById(`app`);
 // define component markup
 const stopwatchMarkup = `<div class="timer-group">
@@ -29,11 +31,7 @@ class Stopwatch {
   constructor() {
     // automatically binds all methods' use of this
     autoBind(this);
-    this.createTimer();
-  } //end of constructor
 
-  // Methods
-  createTimer() {
     this.stopwatchComponent = document.createElement(`div`);
     this.stopwatchComponent.classList.add(
       `stopwatch-component`,
@@ -71,15 +69,15 @@ class Stopwatch {
     this.content = `0:00.00`;
 
     this.timerDisplay = document.querySelector(`.time-display`);
-
     this.loop();
-  }
+  } //end of constructor
 
   loop() {
     // update ui state
     this.isInitialState = this.toggleButton.classList.contains(`initial-state`);
     this.isRunning = this.toggleButton.classList.contains(`running`);
     this.isPaused = this.toggleButton.classList.contains(`paused`);
+
     //update time variables
     this.now = Date.now();
 
@@ -171,9 +169,10 @@ class Stopwatch {
 
 //- Global UI functions
 const spawnTimer = function() {
+  console.log(`spawning a new timer ${stopwatchIter}`);
+  stopwatchGroup[stopwatchIter] = new Stopwatch();
+  console.log(stopwatchGroup[stopwatchIter]);
   stopwatchIter++;
-  console.log(`spawning a new timer`);
-  const instance = new Stopwatch();
 };
 
 //- Global UI
