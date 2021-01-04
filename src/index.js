@@ -41,9 +41,11 @@ class Stopwatch {
     appDiv.appendChild(this.stopwatchComponent);
     this.stopwatchComponent.innerHTML = stopwatchMarkup;
 
+    // select component
+
     //button selectors
-    this.toggleButton = document.querySelector(`.toggle-timer`);
-    this.resetButton = document.querySelector(`.reset-timer`);
+    this.toggleButton = this.stopwatchComponent.querySelector(`.toggle-timer`);
+    this.resetButton = this.stopwatchComponent.querySelector(`.reset-timer`);
 
     // button event listeners
     this.toggleButton.addEventListener(`click`, this.toggleTimer);
@@ -67,7 +69,7 @@ class Stopwatch {
     // declare initial display content
     this.content = `0:00.00`;
 
-    this.timerDisplay = document.querySelector(`.time-display`);
+    this.timerDisplay = this.stopwatchComponent.querySelector(`.time-display`);
     this.loop();
   } //end of constructor
 
